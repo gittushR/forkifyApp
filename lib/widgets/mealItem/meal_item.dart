@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forkify/models/meal.dart';
+import 'package:forkify/screens/meal_details.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:forkify/widgets/mealItem/meal_item_trait.dart';
 
@@ -32,6 +33,14 @@ class MealItem extends StatelessWidget {
     }
   }
 
+  void _onSelectMeal(BuildContext context, Meal meal) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => MealDetails(meal: meal),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -42,7 +51,9 @@ class MealItem extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       elevation: 2,
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          _onSelectMeal(context, meal);
+        },
         child: Stack(
           children: [
             FadeInImage(
