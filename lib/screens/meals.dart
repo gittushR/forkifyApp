@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forkify/models/meal.dart';
-import 'package:forkify/widgets/meal_item.dart';
+import 'package:forkify/widgets/mealItem/meal_item.dart';
 
 class MealsScreen extends StatelessWidget {
   const MealsScreen({required this.title, required this.meals, super.key});
