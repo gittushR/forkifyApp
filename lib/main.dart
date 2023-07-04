@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:forkify/screens/tabs.dart';
+import 'package:forkify/screens/tabs_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 final theme = ThemeData(

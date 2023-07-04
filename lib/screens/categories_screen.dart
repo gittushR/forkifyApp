@@ -1,18 +1,23 @@
 import 'package:forkify/data/dummy_data.dart';
 import 'package:flutter/material.dart';
 import 'package:forkify/widgets/category_grid_item.dart';
-import 'package:forkify/screens/meals.dart';
+import 'package:forkify/screens/meals_screen.dart';
 import 'package:forkify/models/category.dart';
+import 'package:forkify/models/meal.dart';
 
 class CategoriesScreen extends StatelessWidget {
-  const CategoriesScreen({super.key});
+  const CategoriesScreen({super.key, required this.onToggleFavorite});
+  final void Function(Meal meal) onToggleFavorite;
   void _selectCategory(BuildContext context, Category category) {
     final filteredMeals = dummyMeals
         .where((meal) => meal.categories.contains(category.id))
         .toList();
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (ctx) =>
-            MealsScreen(title: category.title, meals: filteredMeals)));
+        builder: (ctx) => MealsScreen(
+              title: category.title,
+              meals: filteredMeals,
+              onToggleFavorite: onToggleFavorite,
+            )));
   }
 
   @override

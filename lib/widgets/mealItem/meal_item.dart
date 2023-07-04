@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:forkify/models/meal.dart';
-import 'package:forkify/screens/meal_details.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:forkify/widgets/mealItem/meal_item_trait.dart';
 
 class MealItem extends StatelessWidget {
-  const MealItem({required this.meal, super.key});
+  const MealItem({required this.meal, super.key, required this.onSelectMeal});
   final Meal meal;
+  final void Function(Meal meal) onSelectMeal;
   String get complexityText {
     switch (meal.complexity) {
       case Complexity.simple:
@@ -33,14 +33,6 @@ class MealItem extends StatelessWidget {
     }
   }
 
-  void _onSelectMeal(BuildContext context, Meal meal) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (ctx) => MealDetails(meal: meal),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -52,7 +44,7 @@ class MealItem extends StatelessWidget {
       elevation: 2,
       child: InkWell(
         onTap: () {
-          _onSelectMeal(context, meal);
+          onSelectMeal(meal);
         },
         child: Stack(
           children: [
