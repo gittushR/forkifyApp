@@ -28,7 +28,18 @@ class MealDetails extends ConsumerWidget {
                   duration: const Duration(seconds: 5),
                 ));
               },
-              icon: Icon(isFav ? Icons.star : Icons.star_border),
+              icon: AnimatedSwitcher(
+                transitionBuilder: (child, animation) => FadeTransition(
+                  opacity: Tween<double>(
+                    begin: 0.5,
+                    end: 1,
+                  ).animate(animation),
+                  child: child,
+                ),
+                duration: const Duration(milliseconds: 300),
+                child: Icon(isFav ? Icons.star : Icons.star_border,
+                    key: ValueKey(isFav)),
+              ),
             )
           ],
         ),
@@ -36,10 +47,13 @@ class MealDetails extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.network(
-                meal.imageUrl,
-                width: double.infinity,
-                fit: BoxFit.cover,
+              Hero(
+                tag: meal.id,
+                child: Image.network(
+                  meal.imageUrl,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
               ),
               const SizedBox(height: 14),
               Text(
