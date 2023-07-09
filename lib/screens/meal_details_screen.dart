@@ -1,23 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:forkify/models/meal.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:forkify/providers/favorites_provider.dart';
 
-class MealDetails extends StatelessWidget {
-  const MealDetails(
-      {super.key, required this.meal, required this.onToggleFavorite});
+class MealDetails extends ConsumerWidget {
+  const MealDetails({super.key, required this.meal});
   final Meal meal;
-  final void Function(Meal meal) onToggleFavorite;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     String bullet = "\u2022";
+    var favMeals = ref.watch(favoriteMealsProvider);
+    final isFav = favMeals.contains(meal);
     return Scaffold(
         appBar: AppBar(
           title: Text(meal.title),
           actions: [
             IconButton(
               onPressed: () {
-                onToggleFavorite(meal);
+                final wasAdded = ref
+                    .read(favoriteMealsProvider.notifier)
+                    .toggleMealFavStatus(meal);
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(wasAdded
+                      ? "Added to Favorites"
+                      : "Removed from Favorites"),
+                  duration: const Duration(seconds: 5),
+                ));
               },
-              icon: const Icon(Icons.star),
+              icon: Icon(isFav ? Icons.star : Icons.star_border),
             )
           ],
         ),

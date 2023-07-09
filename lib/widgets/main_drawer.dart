@@ -24,7 +24,7 @@ class MainDrawer extends StatelessWidget {
                     size: 50, color: Theme.of(context).colorScheme.primary),
                 const SizedBox(width: 18),
                 Text(
-                  "Cooking Up!",
+                  "forkify",
                   style: Theme.of(context)
                       .textTheme
                       .titleLarge!

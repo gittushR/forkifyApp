@@ -4,20 +4,14 @@ import 'package:forkify/widgets/mealItem/meal_item.dart';
 import 'package:forkify/screens/meal_details_screen.dart';
 
 class MealsScreen extends StatelessWidget {
-  const MealsScreen(
-      {this.title,
-      required this.meals,
-      super.key,
-      required this.onToggleFavorite});
+  const MealsScreen({this.title, required this.meals, super.key});
   final String? title;
   final List<Meal> meals;
-  final void Function(Meal meal) onToggleFavorite;
   void onSelectMeal(BuildContext context, Meal meal) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => MealDetails(
           meal: meal,
-          onToggleFavorite: onToggleFavorite,
         ),
       ),
     );

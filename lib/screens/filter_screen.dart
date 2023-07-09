@@ -1,63 +1,25 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:forkify/main.dart';
+import 'package:forkify/providers/filters_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-enum Filter {
-  glutenFree,
-  lactoseFree,
-  vegetarian,
-  vegan,
-}
-
-class FilterScreen extends StatefulWidget {
-  const FilterScreen({super.key, required this.currentFilters});
-
-  final Map<Filter, bool> currentFilters;
-  @override
-  State<FilterScreen> createState() {
-    return _FilterScreen();
-  }
-}
-
-class _FilterScreen extends State<FilterScreen> {
-  var _glutenFree = false;
-  var _lactoseFree = false;
-  var _vegetarian = false;
-  var _vegan = false;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _glutenFree = widget.currentFilters[Filter.glutenFree]!;
-    _lactoseFree = widget.currentFilters[Filter.lactoseFree]!;
-    _vegetarian = widget.currentFilters[Filter.vegetarian]!;
-    _vegan = widget.currentFilters[Filter.vegan]!;
-  }
+class FilterScreen extends ConsumerWidget {
+  const FilterScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    var activeFilters = ref.watch(filtersProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Your Filters"),
       ),
-      body: WillPopScope(
-        onWillPop: () async {
-          Navigator.of(context).pop({
-            Filter.glutenFree: _glutenFree,
-            Filter.lactoseFree: _lactoseFree,
-            Filter.vegetarian: _vegetarian,
-            Filter.vegan: _vegan,
-          });
-          return false;
-        },
-        child: Column(children: [
+      body: Column(
+        children: [
           SwitchListTile(
-            value: _glutenFree,
+            value: activeFilters[Filter.glutenFree]!,
             onChanged: (newValue) {
-              setState(() {
-                _glutenFree = newValue;
-              });
+              ref
+                  .read(filtersProvider.notifier)
+                  .setFilter(Filter.glutenFree, newValue);
             },
             title: Text(
               'Gluten-free',
@@ -77,11 +39,11 @@ class _FilterScreen extends State<FilterScreen> {
             contentPadding: const EdgeInsets.only(left: 34, right: 22),
           ),
           SwitchListTile(
-            value: _lactoseFree,
+            value: activeFilters[Filter.lactoseFree]!,
             onChanged: (newValue) {
-              setState(() {
-                _lactoseFree = newValue;
-              });
+              ref
+                  .read(filtersProvider.notifier)
+                  .setFilter(Filter.lactoseFree, newValue);
             },
             title: Text(
               'Lactose-free',
@@ -101,11 +63,11 @@ class _FilterScreen extends State<FilterScreen> {
             contentPadding: const EdgeInsets.only(left: 34, right: 22),
           ),
           SwitchListTile(
-            value: _vegetarian,
+            value: activeFilters[Filter.vegetarian]!,
             onChanged: (newValue) {
-              setState(() {
-                _vegetarian = newValue;
-              });
+              ref
+                  .read(filtersProvider.notifier)
+                  .setFilter(Filter.vegetarian, newValue);
             },
             title: Text(
               'Vegetarian',
@@ -125,11 +87,11 @@ class _FilterScreen extends State<FilterScreen> {
             contentPadding: const EdgeInsets.only(left: 34, right: 22),
           ),
           SwitchListTile(
-            value: _vegan,
+            value: activeFilters[Filter.vegan]!,
             onChanged: (newValue) {
-              setState(() {
-                _vegan = newValue;
-              });
+              ref
+                  .read(filtersProvider.notifier)
+                  .setFilter(Filter.vegan, newValue);
             },
             title: Text(
               'Vegan',
@@ -148,7 +110,7 @@ class _FilterScreen extends State<FilterScreen> {
             activeColor: Theme.of(context).colorScheme.tertiary,
             contentPadding: const EdgeInsets.only(left: 34, right: 22),
           )
-        ]),
+        ],
       ),
     );
   }
